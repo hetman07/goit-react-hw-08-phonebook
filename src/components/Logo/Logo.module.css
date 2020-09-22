@@ -1,0 +1,14 @@
+/* Animation for LOGO 1st mounting  */
+.appear {
+  transform: translateX(-100%);
+}
+
+.appearActive {
+  transform: translateX(0);
+  transition: transform 500ms linear;
+}
+
+.title {
+  color: #3f51b5;
+  text-transform: capitalize;
+}
