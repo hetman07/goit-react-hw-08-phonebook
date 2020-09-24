@@ -1,7 +1,7 @@
 import axios from "axios";
 import authAction from "./authActions";
 
-axios.defaults.baseURL = "https://goit-phonebook-api.herokuapp.com/";
+axios.defaults.baseURL = "https://goit-phonebook-api.herokuapp.com";
 
 const token = {
   set(token) {
@@ -19,16 +19,16 @@ const register = (name, email, password) => dispatch => {
     .post("/users/signup", { name, email, password })
     .then(response => {
       token.set(response.data.token); //передаю сгенерированый токен для записи в заголовок запроса
-      dispatch(authAction.registerSuccess(response.data));
+      return dispatch(authAction.registerSuccess(response.data));
     })
     .catch(error => dispatch(authAction.registerError(error)));
 };
 
-const logIn = (email, passwords) => dispatch => {
+const logIn = (email, password) => dispatch => {
   dispatch(authAction.loginRequest());
 
   axios
-    .post("/users/login", { email, passwords })
+    .post("/users/login", { email, password })
     .then(response => {
       token.set(response.data.token);
       dispatch(authAction.loginSuccess(response.data));

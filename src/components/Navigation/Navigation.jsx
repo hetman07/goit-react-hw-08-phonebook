@@ -23,7 +23,7 @@ export default function Navigation() {
         activeClassName="Navigation-link-active"
       >
         <Button variant="contained" color="primary">
-          Register
+          SignUp
         </Button>
       </NavLink>
 
@@ -34,7 +34,7 @@ export default function Navigation() {
         activeClassName="Navigation-link-active"
       >
         <Button variant="contained" color="primary">
-          LogIn
+          SignIn
         </Button>
       </NavLink>
 

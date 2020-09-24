@@ -1,17 +1,17 @@
-import React from 'react';
-import Appbar from '../Appbar';
+import React from "react";
+import UserMenu from "../UserMenu";
 
 const styles = {
   maxWidth: 1170,
-  marginLeft: 'auto',
-  marginRight: 'auto',
+  marginLeft: "auto",
+  marginRight: "auto",
   paddingRight: 12,
   paddingLeft: 12,
 };
 
 const Layout = ({ children }) => (
   <div style={styles}>
-    <Appbar />
+    <UserMenu />
     <hr />
     {children}
   </div>

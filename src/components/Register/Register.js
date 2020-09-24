@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import authOperations from "../../redux/auth/authOperations";
+import { compose } from "redux";
+import { authOperations } from "../../redux/auth";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -13,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 function Copyright() {
@@ -29,24 +30,25 @@ function Copyright() {
   );
 }
 
-const styles = {
+const styles = theme => ({
   paper: {
-    marginTop: 8,
+    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
-    margin: 1,
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: 3,
+    marginTop: theme.spacing(3),
   },
   submit: {
-    margin: 3,
+    margin: theme.spacing(3, 0, 2),
   },
-};
+});
 
 class Register extends Component {
   state = {
@@ -63,33 +65,38 @@ class Register extends Component {
   };
 
   handleSubmit = e => {
+    //отмена перезагрузки формы
     e.preventDefault();
-    this.props.onAddUser(
-      this.state.name,
-      this.state.email,
-      this.state.password,
-    );
-    // this.setState({
-    //   name: "",
-    //   email: "",
-    //   password: "",
-    // });
+    //вызов операции по запросу на добавление юзера с входящими парметрами
+    const { name, email, password } = this.state;
+    this.props.onAddUser(name, email, password);
+    //обнуление локального стейта
+    this.setState({
+      name: "",
+      email: "",
+      password: "",
+    });
   };
 
   render() {
     const { name, email, password } = this.state;
+    const { classes } = this.props;
 
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={styles.paper}>
-          <Avatar className={styles.avatar}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={styles.form} noValidate onSubmit={this.handleSubmit}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={this.handleSubmit}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -139,7 +146,7 @@ class Register extends Component {
               fullWidth
               variant="contained"
               color="primary"
-              className={styles.submit}
+              className={classes.submit}
             >
               Sign Up
             </Button>
@@ -164,4 +171,7 @@ const mapDispatchToProps = {
   onAddUser: authOperations.register,
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+export default compose(
+  withStyles(styles),
+  connect(null, mapDispatchToProps),
+)(Register);
