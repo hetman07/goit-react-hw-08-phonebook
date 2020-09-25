@@ -16,7 +16,6 @@ class Phonebook extends Component {
     this.props.onFetchContacts();
   }
   render() {
-    console.log("1111", this.props.isErrorMessage.message);
     return (
       <>
         <Logo text={"Phonebook"} />
