@@ -5,8 +5,10 @@ import PulseLoader from "react-spinners/PulseLoader";
 
 import routes from "../routes";
 import Layout from "./Layout";
+
 import { authOperations } from "../redux/auth";
-import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 class App extends Component {
   componentDidMount() {
@@ -17,24 +19,25 @@ class App extends Component {
       <Suspense fallback={<PulseLoader size={20} color={"#123abc"} />}>
         <Layout>
           <Switch>
-            <PrivateRoute
+            <PublicRoute
               path={routes.register}
               exact
-              access={"PUBLIC"}
+              restricted={true}
               component={lazy(() => import("./Register"))}
             />
-            <PrivateRoute
+            <PublicRoute
               path={routes.login}
               exact
-              access={"PUBLIC"}
+              restricted={true}
               component={lazy(() => import("./Login"))}
             />
             <PrivateRoute
               path={routes.contacts}
               exact
-              access={"PRIVAT"}
+              restricted={false}
               component={lazy(() => import("./Phonebook"))}
             />
+
             {/* <Redirect to="/" /> */}
           </Switch>
         </Layout>

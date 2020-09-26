@@ -15,10 +15,10 @@ const PrivateRoute = ({
   <Route
     {...routeProps}
     render={props =>
-      isAuthenticated && this.props.access === "PUBLIC" ? (
-        <Redirect to={routes.contacts} />
-      ) : (
+      isAuthenticated ? (
         <Component {...props} />
+      ) : (
+        <Redirect to={routes.login} />
       )
     }
   />
@@ -29,3 +29,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(PrivateRoute);
+
+// (!isAuthenticated && !access) || (isAuthenticated && access) ? (
+//   <Component {...props} />
+// ) : (
+//   <Redirect to={routes.login} />
+// )
