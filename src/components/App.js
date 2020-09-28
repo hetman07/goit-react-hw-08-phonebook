@@ -46,6 +46,7 @@ class App extends Component {
   }
 }
 
-export default connect(null, {
+const mapDispatchToProps = {
   onGetCurrentUser: authOperations.getCurrentUser,
-})(App);
+};
+export default connect(null, mapDispatchToProps)(App);

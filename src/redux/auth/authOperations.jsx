@@ -57,6 +57,7 @@ const getCurrentUser = () => (dispatch, getState) => {
   }
 
   token.set(persistedToken);
+
   dispatch(authAction.getCurrentUserRequest());
 
   axios
