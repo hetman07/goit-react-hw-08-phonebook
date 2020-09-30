@@ -15,7 +15,9 @@ const styles = {
   root: {
     flexGrow: 1,
   },
-
+  appBar: {
+    position: "relative",
+  },
   title: {
     flexGrow: 1,
   },
@@ -25,9 +27,9 @@ const UserMenu = ({ classes, isAuthenticated, name, onLogout }) => {
   console.log(isAuthenticated);
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} noWrap>
             Welcome
           </Typography>
           {isAuthenticated ? (
