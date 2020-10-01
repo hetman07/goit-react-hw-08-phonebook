@@ -21,7 +21,9 @@ import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-
+import InputAdornment from "@material-ui/core/InputAdornment";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import CallIcon from "@material-ui/icons/Call";
 import TextField from "@material-ui/core/TextField";
 
 import Input from "@material-ui/core/Input";
@@ -78,46 +80,52 @@ const styles = theme => ({
 });
 
 class ContactForm extends Component {
-  static propTypes = {
-    handleSubmit: PropTypes.func,
-    handleChange: PropTypes.func,
-  };
+  // static propTypes = {
+  //   handleSubmit: PropTypes.func,
+  //   handleChange: PropTypes.func,
+  // };
 
-  state = {
-    name: "",
-    number: "(0  )    -    ",
-    txtMsg: "",
-  };
+  // state = {
+  //   name: "",
+  //   number: "(0  )    -    ",
+  //   txtMsg: "",
+  //   error: false,
+  // };
+
   //1 ввожу данные в поле инпут и меняю поле name/number в state
-  handleChange = e => {
-    const field = e.target.name;
-    this.setState({
-      [field]: e.target.value,
-    });
-  };
+  // handleChange = e => {
+  //   const field = e.target.name;
+  //   this.setState({
+  //     [field]: e.target.value,
+  //   });
+  // };
   //2при нажатии на кнопку add contact снова меняем state только св-во contacts (массив обьектов {name,id})
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = ({ name, number }) => {
+    console.log("отправка");
+    // e.preventDefault();
     // const contacts = this.props.storeContacts;
-    //  const errors = {};
 
     // if (
     //   contacts.find(
     //     contact => contact.name.toLowerCase() === this.state.name.toLowerCase(),
     //   )
     // ) {
-    //   this.setState({ txtMsg: "Contact is dublication!" });
-    //   setTimeout(() => this.setState({ txtMsg: "" }), 3000);
-    // } else if (!this.state.name || !this.state.number) {
-    //   this.setState({ txtMsg: "Contact is EMPTY!" });
-    //   setTimeout(() => this.setState({ txtMsg: "" }), 3000);
+    //   this.setState({ txtMsg: "Contact is dublication!", error: true });
+    //   // setTimeout(() => this.setState({ txtMsg: "", error: false }), 3000);
+    // } else if (!this.state.name || this.state.number === "(0  )    -    ") {
+    //   this.setState({ txtMsg: "Contact is EMPTY!", error: true });
+    //   // setTimeout(() => this.setState({ txtMsg: "", error: false }), 3000);
     // } else {
-    this.props.onAddContact(this.state.name, this.state.number);
+    this.props.onAddContact(name, number);
+    // }
 
-    this.setState({
-      name: "",
-      number: "(0  )    -    ",
-    });
+    // this.setState({
+    //   name: "",
+    //   number: "(0  )    -    ",
+    //   txtMsg: "",
+    //   error: false,
+    // });
+    console.log("чистый стейт");
   };
 
   TextMaskCustom = props => {
@@ -131,8 +139,8 @@ class ContactForm extends Component {
         }}
         mask={[
           "(",
+          "0",
           /[0-9]/,
-          /\d/,
           /\d/,
           ")",
           " ",
@@ -154,10 +162,12 @@ class ContactForm extends Component {
 
   render() {
     const { classes } = this.props;
+    // const { name, number, txtMsg, error } = this.state;
 
     return (
       <>
         <CssBaseline />
+
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="h6" gutterBottom>
@@ -168,37 +178,54 @@ class ContactForm extends Component {
               onSubmit={this.handleSubmit}
               validate={values => {
                 const errors = {};
+                const contacts = this.props.storeContacts;
+
+                if (contacts.find(contact => contact.name === values.name)) {
+                  errors.name = "Name is dublicate!";
+                }
 
                 if (!values.name) {
                   errors.name = "Name is empty!";
                 }
 
-                if (!values.number || values.number === "(0  )    -    ") {
+                if (values.number === "(0  )    -    ") {
                   errors.number = "Phone is empty!";
                 }
 
                 return errors;
               }}
-              render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
+              render={({
+                handleSubmit,
+                form,
+                submitting,
+                pristine,
+                values = "",
+              }) => (
+                <form noValidate onSubmit={handleSubmit}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Field
+                        onChange={this.handleChange}
                         name="name"
                         render={({ meta, input }) => (
                           <TextField
-                            required
-                            meta={meta}
-                            error={meta.touched && meta.error}
+                            value={""}
                             {...input}
+                            required
+                            error={meta.touched && meta.error}
+                            helperText={meta.touched && meta.error}
                             id="name"
                             name="name"
                             label="Name"
                             fullWidth
                             autoComplete="given-name"
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                            data-row="name"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <AccountCircle />
+                                </InputAdornment>
+                              ),
+                            }}
                           />
                         )}
                       />
@@ -208,19 +235,22 @@ class ContactForm extends Component {
                         name="number"
                         render={({ meta, input }) => (
                           <TextField
+                            {...input}
                             required
                             error={meta.touched && meta.error}
-                            {...input}
+                            helperText={meta.error}
                             id="number"
                             name="number"
                             label="Phone"
                             fullWidth
                             autoComplete="shipping phone-number"
-                            value={this.state.number}
-                            onChange={this.handleChange}
-                            data-row="number"
                             InputProps={{
                               inputComponent: this.TextMaskCustom,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <CallIcon />
+                                </InputAdornment>
+                              ),
                             }}
                           />
                         )}
@@ -230,9 +260,12 @@ class ContactForm extends Component {
 
                   <div className={classes.buttons}>
                     <Button
+                      type="submit"
                       variant="contained"
                       color="primary"
                       className={classes.button}
+                      // onClick={form.reset}
+                      disabled={submitting || pristine}
                     >
                       Add Contact
                     </Button>
