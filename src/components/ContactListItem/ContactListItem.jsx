@@ -13,17 +13,29 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
 import CallIcon from "@material-ui/icons/Call";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import phonebookOperations from "../../redux/phonebook/phonebookOperations";
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles(theme => ({
   button: {
-    "&:hover": {
-      color: "primary",
+    "&&:hover": {
+      backgroundColor: "purple",
     },
   },
 }));
+
+const StyledChip = withStyles({
+  root: {
+    "&&:hover": {
+      backgroundColor: "purple",
+    },
+    "&&:focus": {
+      backgroundColor: "green",
+    },
+  },
+})(Chip);
 
 const ContactListItem = ({ id, name, number, onRemove, styles }) => {
   const classes = useStyles();
@@ -44,7 +56,7 @@ const ContactListItem = ({ id, name, number, onRemove, styles }) => {
           <ListItemText id={id} primary={number} />
           <ListItemSecondaryAction>
             <IconButton aria-label="delete" onClick={onRemove}>
-              <DeleteIcon color={classes.button} />
+              <DeleteIcon className={classes.button} />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
