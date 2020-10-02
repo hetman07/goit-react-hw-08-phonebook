@@ -1,24 +1,13 @@
 import React from "react";
-import { compose } from "redux";
+
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
 import ContactListItem from "../ContactListItem/ContactListItem";
-import { withStyles } from "@material-ui/core/styles";
+
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
-
-const styles = theme => ({
-  root: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-});
 
 const ContactList = ({ contacts, lengthContacts }) => {
   return (
@@ -36,7 +25,6 @@ const ContactList = ({ contacts, lengthContacts }) => {
           </ListSubheader>
         )
       }
-      className={styles.root}
     >
       {contacts.map(({ id }) => (
         <ContactListItem key={id} id={id} />
@@ -60,7 +48,4 @@ const mapStateToProps = state => ({
   lengthContacts: phonebookSelectors.getItems(state).length,
 });
 
-export default compose(
-  withStyles(styles),
-  connect(mapStateToProps),
-)(ContactList);
+export default connect(mapStateToProps)(ContactList);

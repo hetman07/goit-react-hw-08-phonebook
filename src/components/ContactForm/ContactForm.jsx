@@ -24,16 +24,6 @@ import CallIcon from "@material-ui/icons/Call";
 import MaskedInput from "react-text-mask";
 
 const styles = theme => ({
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
-  },
   paper: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
@@ -148,7 +138,6 @@ class ContactForm extends Component {
                       name="name"
                       render={({ meta, input }) => (
                         <TextField
-                          autoFocus
                           {...input}
                           required
                           error={meta.touched && meta.error}

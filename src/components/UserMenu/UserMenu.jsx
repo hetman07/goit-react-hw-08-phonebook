@@ -24,7 +24,6 @@ const styles = {
 };
 
 const UserMenu = ({ classes, isAuthenticated, name, onLogout }) => {
-  console.log(isAuthenticated);
   return (
     <>
       <AppBar position="absolute" className={classes.appBar}>

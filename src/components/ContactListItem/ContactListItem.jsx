@@ -1,33 +1,54 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
+
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Avatar from "@material-ui/core/Avatar";
+import CallIcon from "@material-ui/icons/Call";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import phonebookOperations from "../../redux/phonebook/phonebookOperations";
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
 
-import styles from "../ContactList//ContactList.module.css";
+const useStyles = makeStyles(theme => ({
+  button: {
+    "&:hover": {
+      color: "primary",
+    },
+  },
+}));
 
-const ContactListItem = ({ id, name, number, onRemove }) => {
+const ContactListItem = ({ id, name, number, onRemove, styles }) => {
+  const classes = useStyles();
   return (
-    <CSSTransition
-      in={true}
-      appear={true}
-      key={id}
-      timeout={250}
-      classNames={{ ...styles }}
-      unmountOnExit
-    >
-      <li className={styles.TaskListItem} key={id}>
-        <span className={styles.TaskListText}>{name}: </span>
-        <span className={styles.TaskListText}>{number}</span>
-        <button
-          type="button"
-          className={styles.TaskListButton}
-          onClick={onRemove}
-        >
-          Delete
-        </button>
-      </li>
+    <CSSTransition in={true} appear={true} key={id} timeout={250} unmountOnExit>
+      <Paper>
+        <ListItem key={id} button>
+          <ListItemAvatar>
+            <Avatar
+              alt={"Avatar"}
+              src={
+                "https://icon-library.net/images/avatar-icon-images/avatar-icon-images-7.jpg"
+              }
+            />
+          </ListItemAvatar>
+          <ListItemText id={id} primary={`${name}: `} />
+          <CallIcon color="primary" />
+          <ListItemText id={id} primary={number} />
+          <ListItemSecondaryAction>
+            <IconButton aria-label="delete" onClick={onRemove}>
+              <DeleteIcon color={classes.button} />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </Paper>
     </CSSTransition>
   );
 };
