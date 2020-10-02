@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, Component } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import PulseLoader from "react-spinners/PulseLoader";
 
