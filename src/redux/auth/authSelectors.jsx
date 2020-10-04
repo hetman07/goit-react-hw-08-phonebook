@@ -2,4 +2,6 @@ const isAuthenticated = state => state.auth.token;
 
 const getUserName = state => state.auth.user.name;
 
-export default { isAuthenticated, getUserName };
+const getError = state => state.auth.error;
+
+export default { isAuthenticated, getUserName, getError };

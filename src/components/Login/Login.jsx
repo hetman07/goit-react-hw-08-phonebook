@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { Form, Field } from "react-final-form";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -15,8 +16,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Alert from '@material-ui/lab/Alert';
 
-import { authOperations } from "../../redux/auth";
+import { authOperations, authSelectors } from "../../redux/auth";
 
 function Copyright() {
   return (
@@ -52,34 +54,17 @@ const styles = theme => ({
 });
 
 class Login extends Component {
-  state = {
-    email: "",
-    password: "",
-  };
 
-  handleChange = e => {
-    const field = e.target.name;
-    this.setState({
-      [field]: e.target.value,
-    });
-  };
 
-  handleSubmit = e => {
-    //отмена перезагрузки формы
-    e.preventDefault();
-    //вызов операции по запросу на добавление юзера с входящими парметрами
-    const { email, password } = this.state;
+  handleSubmit = ({email, password}) => {
+    
     this.props.onLogin(email, password);
-    //обнуление локального стейта
-    this.setState({
-      email: "",
-      password: "",
-    });
+   
   };
 
   render() {
     const { classes } = this.props;
-    const { email, password } = this.state;
+    
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -90,41 +75,87 @@ class Login extends Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form
+
+          <Form
+            onSubmit={this.handleSubmit}
+            validate={values => {
+            
+              const errors = {};
+              if (
+                values.email &&
+                !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                  values.email
+                )
+              ) {
+                errors.email = 'Inccorect email';
+              }
+
+              if (values.password < /^\d{7}$/.test(values.password)) {
+                errors.password = 'Password must be more 7 symbols!';
+              }
+
+              if (!values.email) {
+                errors.email = "Name is empty!";
+              }
+
+              if (!values.password) {
+                errors.password = "Password is empty!";
+              }
+
+              return errors;
+            }}
+            render={({ handleSubmit, submitError }) => (
+              <form
             className={classes.form}
             noValidate
-            onSubmit={this.handleSubmit}
+            onSubmit={handleSubmit}
           >
+                                <Field
+                      onChange={this.handleChange}
+                      name="email"
+                      render={({ meta, input }) => (
             <TextField
               variant="outlined"
               margin="normal"
               required
+              error={meta.touched && meta.error}
+                          helperText={meta.touched && meta.error}
+                          {...input}
               fullWidth
               id="email"
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
-              value={email}
-              onChange={this.handleChange}
             />
+                      )}
+                      />
+                      <Field
+                      name="password"
+                      render={({ meta, input }) => (
+
             <TextField
               variant="outlined"
               margin="normal"
-              required
+              {...input}
+                          required
+                          error={meta.touched && meta.error}
+                          helperText={meta.touched && meta.error}
               fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
-              value={password}
-              onChange={this.handleChange}
+              
             />
+                      )}
+                      />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+             {this.props.isError && <Alert severity="error">Bad request, maybe Inccorect email or password!</Alert>}
             <Button
               type="submit"
               fullWidth
@@ -147,6 +178,8 @@ class Login extends Component {
               </Grid>
             </Grid>
           </form>
+            )}
+          />
         </div>
         <Box mt={8}>
           <Copyright />
@@ -156,11 +189,17 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  
+  isError: authSelectors.getError(state),
+  
+});
+
 const mapDispatchToProps = {
   onLogin: authOperations.logIn,
 };
 
 export default compose(
   withStyles(styles),
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Login);

@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
 import authActions from "./authActions";
 
-const initialUserState = { name: null, email: null, pasword: null };
+const initialUserState = { name: null, email: null, pasword: null, error: null };
 
 const userReducer = createReducer(initialUserState, {
   [authActions.registerSuccess]: (state, { payload }) => payload.user,
