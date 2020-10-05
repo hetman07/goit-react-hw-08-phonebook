@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose } from "redux";
 import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
 
@@ -13,25 +12,21 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
 import CallIcon from "@material-ui/icons/Call";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import phonebookOperations from "../../redux/phonebook/phonebookOperations";
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
-import Chip from "@material-ui/core/Chip";
+
 import styles from "../ContactList/ContactList.module.css";
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    color: "primary",
-    "&&:hover": {
-      color:"secondary",
-    },
-  },
-}));
-
 const ContactListItem = ({ id, name, number, onRemove }) => {
-  const classes = useStyles();
   return (
-    <CSSTransition in={true} appear={true} key={id} timeout={250} classNames={{ ...styles }} unmountOnExit>
+    <CSSTransition
+      in={true}
+      appear={true}
+      key={id}
+      timeout={250}
+      classNames={{ ...styles }}
+      unmountOnExit
+    >
       <Paper>
         <ListItem key={id} button>
           <ListItemAvatar>

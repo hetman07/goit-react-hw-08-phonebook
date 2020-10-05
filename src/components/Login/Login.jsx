@@ -3,20 +3,23 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Form, Field } from "react-final-form";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import {
+  CssBaseline,
+  Avatar,
+  Container,
+  Grid,
+  Button,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Box,
+  Link,
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+
 import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 
 import { authOperations, authSelectors } from "../../redux/auth";
 
@@ -54,17 +57,13 @@ const styles = theme => ({
 });
 
 class Login extends Component {
-
-
-  handleSubmit = ({email, password}) => {
-    
+  handleSubmit = ({ email, password }) => {
     this.props.onLogin(email, password);
-   
   };
 
   render() {
     const { classes } = this.props;
-    
+
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -79,23 +78,22 @@ class Login extends Component {
           <Form
             onSubmit={this.handleSubmit}
             validate={values => {
-            
               const errors = {};
               if (
                 values.email &&
                 !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-                  values.email
+                  values.email,
                 )
               ) {
-                errors.email = 'Inccorect email';
+                errors.email = "Inccorect email";
               }
 
-              if (values.password < /^\d{7}$/.test(values.password)) {
-                errors.password = 'Password must be more 7 symbols!';
+              if (String(values.password).length < 7) {
+                errors.password = "Password must be more 7 symbols!";
               }
 
               if (!values.email) {
-                errors.email = "Name is empty!";
+                errors.email = "Email is empty!";
               }
 
               if (!values.password) {
@@ -104,80 +102,78 @@ class Login extends Component {
 
               return errors;
             }}
-            render={({ handleSubmit, submitError }) => (
-              <form
-            className={classes.form}
-            noValidate
-            onSubmit={handleSubmit}
-          >
-                                <Field
-                      onChange={this.handleChange}
+            render={({ handleSubmit }) => (
+              <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <Field
+                  onChange={this.handleChange}
+                  name="email"
+                  render={({ meta, input }) => (
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      error={meta.touched && meta.error}
+                      helperText={meta.touched && meta.error}
+                      fullWidth
+                      id="email"
+                      label="Email Address"
                       name="email"
-                      render={({ meta, input }) => (
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              error={meta.touched && meta.error}
-                          helperText={meta.touched && meta.error}
-                          {...input}
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-                      )}
-                      />
-                      <Field
+                      autoComplete="email"
+                      autoFocus
+                    />
+                  )}
+                />
+                <Field
+                  name="password"
+                  render={({ meta, input }) => (
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      {...input}
+                      required
+                      error={meta.touched && meta.error}
+                      helperText={meta.touched && meta.error}
+                      fullWidth
                       name="password"
-                      render={({ meta, input }) => (
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              {...input}
-                          required
-                          error={meta.touched && meta.error}
-                          helperText={meta.touched && meta.error}
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              
-            />
-                      )}
-                      />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-             {this.props.isError && <Alert severity="error">Bad request, maybe Inccorect email or password!</Alert>}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                    />
+                  )}
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                {this.props.isError && (
+                  <Alert severity="error">
+                    Bad request, maybe Inccorect email or password!
+                  </Alert>
+                )}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
             )}
           />
         </div>
@@ -190,9 +186,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  
   isError: authSelectors.getError(state),
-  
 });
 
 const mapDispatchToProps = {

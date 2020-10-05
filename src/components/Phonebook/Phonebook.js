@@ -7,7 +7,7 @@ import phonebookOperations from "../../redux/phonebook/phonebookOperations";
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { withStyles } from "@material-ui/core/styles";
-import Alert from "../Alert";
+import Alert from "@material-ui/lab/Alert";
 import ContactForm from "../ContactForm";
 import Filter from "../Filter";
 import ContactList from "../ContactList";
@@ -42,7 +42,7 @@ class Phonebook extends Component {
           <Filter />
           {this.props.isLoadingContact && <PulseLoader />}
           {this.props.isError && (
-            <Alert onShow={this.props.isErrorMessage.message} />
+            <Alert severity="error">{this.props.isErrorMessage}</Alert>
           )}
           <ContactList />
         </main>

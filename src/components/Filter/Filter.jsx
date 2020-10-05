@@ -4,8 +4,8 @@ import phonebookActions from "../../redux/phonebook/phonebookActions";
 import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
 import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
-import {Paper, Typography, TextField} from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Paper, Typography, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import styles from "./Filter.module.css";
 
 const useStyles = makeStyles(theme => ({
@@ -21,37 +21,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 const Filter = ({ value, onChangeFilter, lengthContacts }) => {
   const classes = useStyles();
   return (
     <CSSTransition
-    classNames={{ ...styles }}
+      classNames={{ ...styles }}
       in={lengthContacts > 1 || value !== ""}
       timeout={500}
-      
       unmountOnExit
     >
-      
-      <Paper >
-      <div className={classes.paper}>
-      <Typography variant="h6" gutterBottom>
-      Find contacts by name:
+      <Paper>
+        <div className={classes.paper}>
+          <Typography variant="h6" gutterBottom>
+            Find contacts by name:
           </Typography>
           <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="filter"
-              label="filter"
-              name="filter"
-              autoComplete="filter"
-              value={value}
-              onChange={e => onChangeFilter(e.target.value)}
-            />
-            </div>
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="filter"
+            label="filter"
+            name="filter"
+            autoComplete="filter"
+            value={value}
+            onChange={e => onChangeFilter(e.target.value)}
+          />
+        </div>
       </Paper>
-      
     </CSSTransition>
   );
 };

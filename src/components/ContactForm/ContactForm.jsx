@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-
 import { connect } from "react-redux";
 import { Form, Field } from "react-final-form";
-
-import phonebookOperations from "../../redux/phonebook/phonebookOperations";
-import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
-
 import { withStyles } from "@material-ui/core/styles";
-
 import {
   Paper,
   Grid,
@@ -18,10 +12,12 @@ import {
   TextField,
   InputAdornment,
 } from "@material-ui/core";
-
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CallIcon from "@material-ui/icons/Call";
 import MaskedInput from "react-text-mask";
+
+import phonebookOperations from "../../redux/phonebook/phonebookOperations";
+import phonebookSelectors from "../../redux/phonebook/phonebookSelectors";
 
 const styles = theme => ({
   paper: {
@@ -53,7 +49,6 @@ class ContactForm extends Component {
     TextMaskCustom: PropTypes.func,
   };
 
-  //2при нажатии на кнопку add contact снова меняем state только св-во contacts (массив обьектов {name,id})
   handleSubmit = ({ name, number }) => {
     this.props.onAddContact(name, number);
   };
